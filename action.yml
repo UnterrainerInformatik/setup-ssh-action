@@ -11,7 +11,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup SSH - make dir .ssh 🔑
+    - name: Setup SSH - make dir .ssh
       run: sudo mkdir .ssh
       shell: bash
     - name: Setup SSH - set .ssh permissions
