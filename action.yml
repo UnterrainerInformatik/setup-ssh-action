@@ -13,16 +13,16 @@ runs:
   steps:
     - name: Setup SSH - make dir .ssh
       run: sudo mkdir .ssh
-      shell: bash
+      shell: sh
     - name: Setup SSH - set .ssh permissions
       run: sudo chmod 700 .ssh
-      shell: bash
+      shell: sh
     - name: Setup SSH - touch .ssh/${{ inputs.key-name }}
       run: sudo touch .ssh/${{ inputs.key-name }}
-      shell: bash
+      shell: sh
     - name: Setup SSH - fill .ssh/${{ inputs.key-name }}
       run: sudo echo "${{ inputs.key-name }}" >> .ssh/${{ inputs.key-name }}
-      shell: bash
+      shell: sh
     - name: Setup SSH - chmod .ssh/${{ inputs.key-name }}
       run: sudo chmod 600 .ssh/${{ inputs.key-name }}
-      shell: bash
+      shell: sh
