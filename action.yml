@@ -1,8 +1,11 @@
 name: 'Deploy using VPN and SSH'
 description: 'Connects to a server via OpenVPN (or not; depends on the passed variables), connects via SSH and copies / runs scripts to / on the target'
 inputs:
+  key:
+    description: 'The private key to use when connecting via SSH.'
+    required: true
   key-name:
-    description: 'Name of the file the private key is temporarily saved in.'
+    description: 'Name of the file the private key is temporarily saved in. Defaults to `identity`.'
     required: true
     default: 'identity'
 runs:
@@ -18,20 +21,8 @@ runs:
       run: sudo touch .ssh/${{ inputs.key-name }}
       shell: bash
     - name: Setup SSH - fill .ssh/${{ inputs.key-name }}
-      run: sudo echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" >> .ssh/${{ inputs.key-name }}
+      run: sudo echo "${{ secrets.inputs.key }}" >> .ssh/${{ inputs.key-name }}
       shell: bash
     - name: Setup SSH - chmod .ssh/${{ inputs.key-name }}
       run: sudo chmod 600 .ssh/${{ inputs.key-name }}
-      shell: bash
-    - name: Use SSH - mkdir /app/<deploy and data>/<name> 🔓
-      run: ssh -i .ssh/${{ inputs.key-name }} -p ${{ secrets.DEPLOY_SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SERVER }} "mkdir -p /app/deploy/${{ secrets.DEPLOY_DIR }} && mkdir -p /app/data/${{ secrets.DEPLOY_DIR }}"
-      shell: bash
-    - name: Use SSH - chmod 777 ./deploy/*.sh
-      run: sudo chmod 777 ./deploy/*.sh
-      shell: bash
-    - name: Use SSH - rsync deploy dir to target
-      run: rsync -azh -e 'ssh -i .ssh/${{ inputs.key-name }} -p '"${{ secrets.DEPLOY_SSH_PORT }}"'' ./deploy/ ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SERVER }}:/app/deploy/${{ secrets.DEPLOY_DIR }}/
-      shell: bash
-    - name: Use SSH - start up.sh on target
-      run: ssh -i .ssh/${{ inputs.key-name }} -p ${{ secrets.DEPLOY_SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SERVER }} "cd /app/deploy/${{ secrets.DEPLOY_DIR }} && ./up.sh"
       shell: bash
