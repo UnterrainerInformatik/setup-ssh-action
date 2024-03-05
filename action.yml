@@ -1,5 +1,5 @@
-name: 'Deploy using VPN and SSH'
-description: 'Connects to a server via OpenVPN (or not; depends on the passed variables), connects via SSH and copies / runs scripts to / on the target'
+name: 'Create SSH private-key from secret'
+description: 'Takes an input and persists it in the .ssh dir (creates it first; sets permissions) as a private key using the given filename to use later.'
 inputs:
   key:
     description: 'The private key to use when connecting via SSH.'
