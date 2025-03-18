@@ -14,9 +14,6 @@ runs:
     - name: Setup SSH - make dir .ssh
       shell: bash
       run: sudo mkdir .ssh
-    - name: Setup SSH - set .ssh permissions
-      shell: bash
-      run: sudo chmod 700 .ssh
     - name: Setup SSH - touch .ssh/${{ inputs.key-name }}
       shell: bash
       run: sudo touch .ssh/${{ inputs.key-name }}
