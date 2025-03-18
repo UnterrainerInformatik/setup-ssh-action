@@ -23,3 +23,6 @@ runs:
     - name: Setup SSH - chmod .ssh/${{ inputs.key-name }}
       shell: bash
       run: sudo chmod 600 .ssh/${{ inputs.key-name }}
+    - name: Setup SSH - chown the key file (ensure correct user permissions)
+      shell: bash
+      run: chown $(whoami):$(whoami) .ssh/${{ inputs.key-name }}
